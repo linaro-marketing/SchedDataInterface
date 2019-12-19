@@ -1,5 +1,3 @@
-
-from secrets import SCHED_API_KEY
 import re
 import requests
 
@@ -90,13 +88,11 @@ class SchedDataInterface:
             print(e)
             return False
 
-
-
-if __name__ == "__main__":
-    sched_data = SchedDataInterface("https://linaroconnectsandiego.sched.com", SCHED_API_KEY, "SAN19")
-    export_data = sched_data.getExportData()
-    # Do something for one session
-    print(export_data["SAN19-101"])
-    # Do Something for all sessions
-    for entry in export_data.values():
-        print(entry["session_id"])
+# if __name__ == "__main__":
+#     sched_data = SchedDataInterface("https://linaroconnectsandiego.sched.com", SCHED_API_KEY, "SAN19")
+#     export_data = sched_data.getExportData()
+#     # Do something for one session
+#     print(export_data["SAN19-101"])
+#     # Do Something for all sessions
+#     for entry in export_data.values():
+#         print(entry["session_id"])
