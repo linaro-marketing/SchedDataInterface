@@ -12,3 +12,4 @@ from sched_data_interface import SchedDataInterface
 if __name__ == "__main__":
     data_interface = SchedDataInterface("https://linaroconnectsandiego.sched.com", SCHED_API_KEY, "SAN19")
     sessions = data_interface.getSessionsData()
+    print(sessions)
