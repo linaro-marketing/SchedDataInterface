@@ -8,7 +8,11 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 setup(
+    install_requires=required,
     name='sched_data_interface',
     version='0.1.0',
     description='This module handles the retreival of Sched.com session/user data to be consumed by other Connect Automation scripts.',

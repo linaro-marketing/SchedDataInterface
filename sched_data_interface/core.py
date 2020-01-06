@@ -66,7 +66,7 @@ class SchedDataInterface:
                     pass
         return formatted_data
 
-    def getExportData(self):
+    def getSessionsData(self):
         """Gets the export data from sched"""
         export_data = self.get_api_results(
             "/api/session/export?api_key={0}&format=json&fields=event_key,event_type,active,name,id,files,speakers")
