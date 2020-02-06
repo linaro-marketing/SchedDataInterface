@@ -3,7 +3,7 @@ import requests
 
 class SchedDataInterface:
 
-    def __init__(self, sched_url, sched_api_key, connect_code, blackListedTracks=["Food & Beverage", "Informational"]):
+    def __init__(self, sched_url, sched_api_key, connect_code, blackListedTracks=["Food & Beverage", "Informational", "Notices"]):
         self.sched_url = sched_url
         self.connect_code = connect_code
         self.API_KEY = sched_api_key
@@ -50,7 +50,7 @@ class SchedDataInterface:
             try:
                 session_track = entry["event_type"]
             except Exception:
-                session_track = None
+                session_track = "Undefined"
             # Check the current track is not in the blacklisted tracks
             if session_track not in self.blacklistedTracks:
                 # Get the session id from the title
@@ -61,6 +61,8 @@ class SchedDataInterface:
                     # Get the first item found based on the regex
                     session_id = session_id_regex.findall(session_title)[0]
                     entry["session_id"] = session_id
+                    entry["session_title"] = session_title.replace(
+                        session_id, "").strip()
                     # Add new entry to dictionary
                     formatted_data[session_id] = entry
                 # If no session ID exists then skip the session and output a warning
@@ -91,7 +93,8 @@ class SchedDataInterface:
             return False
 
 if __name__ == "__main__":
-    sched_data = SchedDataInterface("https://bud20.sched.com", "", "BUD20")
+    sched_data = SchedDataInterface(
+        "https://bud20.sched.com", "", "BUD20")
     export_data = sched_data.getSessionsData()
     # Do something for one session
     print(export_data["BUD20-101"])
