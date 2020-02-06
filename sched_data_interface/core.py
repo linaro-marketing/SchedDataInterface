@@ -3,17 +3,19 @@ import requests
 
 class SchedDataInterface:
 
-    def __init__(self, sched_url, sched_api_key, connect_code):
+    def __init__(self, sched_url, sched_api_key, connect_code, blackListedTracks=["Food & Beverage", "Informational"]):
         self.sched_url = sched_url
         self.connect_code = connect_code
         self.API_KEY = sched_api_key
         self._verbose = False
         # Blacklisted tracks to ignore when creating pages/resources.json
-        self.blacklistedTracks = ["Food & Beverage", "Informational"]
+        self.blacklistedTracks = blackListedTracks
         self.users_data = self.getUsersData()
 
     def getDetailedSpeakers(self, speakers):
-        """Get's additional information about a speaker"""
+
+        """Retrieves additional information about a speaker"""
+
         new_speakers = []
         try:
             for speaker in speakers:
@@ -27,7 +29,7 @@ class SchedDataInterface:
 
 
     def getUsersData(self):
-        """Get's the users data from sched"""
+        """Retrieves the users data from sched"""
         users_data = self.get_api_results(
             "/api/user/list?fields=id,username,name,phone,email,url,about,role,joined,lastactive,avatar,company,position,location&api_key={0}&format=json")
         return users_data
@@ -48,7 +50,7 @@ class SchedDataInterface:
             try:
                 session_track = entry["event_type"]
             except Exception:
-                pass
+                session_track = None
             # Check the current track is not in the blacklisted tracks
             if session_track not in self.blacklistedTracks:
                 # Get the session id from the title
@@ -88,11 +90,11 @@ class SchedDataInterface:
             print(e)
             return False
 
-# if __name__ == "__main__":
-#     sched_data = SchedDataInterface("https://linaroconnectsandiego.sched.com", SCHED_API_KEY, "SAN19")
-#     export_data = sched_data.getExportData()
-#     # Do something for one session
-#     print(export_data["SAN19-101"])
-#     # Do Something for all sessions
-#     for entry in export_data.values():
-#         print(entry["session_id"])
+if __name__ == "__main__":
+    sched_data = SchedDataInterface("https://bud20.sched.com", "", "BUD20")
+    export_data = sched_data.getSessionsData()
+    # Do something for one session
+    print(export_data["BUD20-101"])
+    # Do Something for all sessions
+    for entry in export_data.values():
+        print(entry)
