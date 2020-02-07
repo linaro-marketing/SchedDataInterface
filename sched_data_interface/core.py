@@ -10,6 +10,7 @@ class SchedDataInterface:
         self._verbose = False
         # Blacklisted tracks to ignore when creating pages/resources.json
         self.blacklistedTracks = blackListedTracks
+        self.users = {}
         self.users_data = self.getUsersData()
 
     def getDetailedSpeakers(self, speakers):
@@ -27,11 +28,37 @@ class SchedDataInterface:
             print(e)
             return "Invalid"
 
+    def add_user(self, user):
+        self.users[user["name"]] = {
+            "username": (user["username"]),
+            "avatar": user["avatar"],
+            "name": user["name"],
+            "location": user["location"],
+            "company": user["company"],
+            "position": user["position"]
+        }
+        return True
+
+    def merge_user(self, user):
+        key = user["name"]
+        user_to_modify = self.users[key]
+        if user_to_modify["avatar"] != user["avatar"] and user["avatar"] != "":
+            user_to_modify["avatar"] = user["avatar"]
+        if user_to_modify["company"] != user["company"] and user["company"] != "":
+            user_to_modify["company"] = user["company"]
+        if user_to_modify["position"] != user["position"] and user["position"] != "":
+            user_to_modify["position"] = user["position"]
+        return True
 
     def getUsersData(self):
         """Retrieves the users data from sched"""
         users_data = self.get_api_results(
             "/api/user/list?fields=id,username,name,phone,email,url,about,role,joined,lastactive,avatar,company,position,location&api_key={0}&format=json")
+        for user in users_data:
+            if user["name"] not in self.users:
+                self.add_user(user)
+            else:
+                self.merge_user(user)
         return users_data
 
     def purge_misc_sessions(self, data):
