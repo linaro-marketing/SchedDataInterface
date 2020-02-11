@@ -100,7 +100,7 @@ class SchedDataInterface:
     def getSessionsData(self):
         """Gets the export data from sched"""
         export_data = self.get_api_results(
-            "/api/session/export?api_key={0}&format=json&fields=event_key,event_type,active,name,id,files,speakers")
+            "/api/session/export?api_key={0}&format=json&fields=event_key,event_type,active,name,id,files,speakers,description")
         export_data = self.purge_misc_sessions(export_data)
         return export_data
 
