@@ -12,4 +12,8 @@ from sched_data_interface import SchedDataInterface
 if __name__ == "__main__":
     data_interface = SchedDataInterface("https://bud20.sched.com", SCHED_API_KEY, "BUD20")
     sessions = data_interface.getSessionsData()
-    print(sessions)
+    for session in sessions.values():
+        try:
+            print("Files: " + str(session["files"]))
+        except KeyError:
+            pass
